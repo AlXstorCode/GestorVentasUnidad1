@@ -218,9 +218,32 @@ do
             Console.ReadKey();
             break;
         case 4:
+            ImprimirEncabezado("REPORTE DE CAJA");
+            if (totalVentas == 0)
+            {
+                Console.WriteLine("[!] Aun no se han realizado ventas.");
+                Console.ReadKey();
+                break;
+            }
+            decimal promedio = totalDinero / totalVentas;
+
+            int indiceMax = 0;
+            for (int i = 1; i < ventaUnidades.Count; i++)
+            {
+                if (ventaUnidades[i] > ventaUnidades[indiceMax])
+                {
+                    indiceMax = i;
+                }
+            }
+            Console.WriteLine($"Total de ventas realizadas:  {totalVentas}");
+            Console.WriteLine($"Total ingresado a caja:      {totalDinero:C}");
+            Console.WriteLine($"Promedio por venta:          {promedio:C}");
+            Console.WriteLine($"Producto mas vendido:        {nombreProduc[indiceMax]} ({ventaUnidades[indiceMax]} unidades)");
+            Console.ReadKey();
             break;
 
         case 5:
+            Console.WriteLine("Gracias por usar el Mini-POS! Hasta pronto!");
             break;
     }
 } while (opt != 5);
