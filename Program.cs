@@ -5,10 +5,10 @@ List<decimal> precioProduc = new List<decimal>();
 List<int> stockProduc = new List<int>();
 List<int> ventaUnidades = new List<int>();
 int totalVentas = 0;
-decimal totalDine = 0;
+decimal totalDinero = 0;
 
 int opt = 0;
-
+//ZONA DE METODOS
 static void ImprimirEncabezado(string titulo)
 {
     Console.Clear();
@@ -62,7 +62,22 @@ static int LeerEntero(string mensaje, int min, int max)
         return numero;
     }
 }
+static decimal CalcularFactura(decimal precio, int cantidad, bool tieneDescuento, out decimal montoIva, out decimal montoDescuento)
+{
+    decimal subtotal = precio * cantidad;
+    if (tieneDescuento)
+    {
+        montoDescuento = subtotal * 0.10m;
+    }
+    else
+    {
+        montoDescuento = 0;
+    }
+    montoIva = (subtotal - montoDescuento) * 0.19m;
 
+    return subtotal - montoDescuento + montoIva;
+}
+//Aqui terminan los metodos.
 do
 {
     ImprimirEncabezado("SISTEMA GESTOR DE VENTAS E INVENTARIO (MINI-POS)");
