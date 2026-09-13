@@ -13,10 +13,10 @@ static void ImprimirEncabezado(string titulo)
 {
     Console.Clear();
 
-    string linea = new string('=', titulo.Length + 4);
+    string linea = new string('=', titulo.Length + 8);
 
     Console.WriteLine(linea);
-    Console.WriteLine($"  {titulo.ToUpper()}  ");
+    Console.WriteLine($"   {titulo.ToUpper()}  ");
     Console.WriteLine(linea);
 }
 static decimal LeerDecimal(string mensaje, decimal min)
@@ -119,6 +119,26 @@ do
             break;
 
         case 2:
+            ImprimirEncabezado("INVENTARIO COMPLETO");
+            if (nombreProduc.Count == 0)
+            {
+                Console.WriteLine("[!] No hay productos registrados");
+                Console.ReadKey();
+                break;
+            }
+            else
+            {
+                for (int i = 0; i < nombreProduc.Count; i++)
+                {
+                    Console.Write($"{i + 1}. {nombreProduc[i]} | Precio: {precioProduc[i]:C} | Stock: {stockProduc[i]} ");
+                    if (stockProduc[i] < 5)
+                    {
+                        Console.Write("[ALERTA: BAJO STOCK]");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.ReadKey();
             break;
 
         case 3:
