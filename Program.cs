@@ -157,8 +157,66 @@ do
             break;
 
         case 3:
-            break;
+            ImprimirEncabezado("REGISTRAR VENTA");
+            if (nombreProduc.Count == 0)
+            {
+                Console.WriteLine("[!] No hay productos registrados");
+                Console.ReadKey();
+                break;
+            }
+            else
+            {
+                for (int i = 0; i < nombreProduc.Count; i++)
+                {
+                    Console.Write($"{i + 1}. {nombreProduc[i]} | Precio: {precioProduc[i]:C} | Stock: {stockProduc[i]} ");
+                    if (stockProduc[i] < 5)
+                    {
+                        Console.Write("[ALERTA: BAJO STOCK]");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            int indice = LeerEntero($"Seleccione el numero/id del producto a vender (1-{nombreProduc.Count}): ", 1, nombreProduc.Count) - 1;
+            if (stockProduc[indice] == 0) 
+            {
+                Console.WriteLine("[ERROR] Producto sin stock.");
+                Console.ReadKey();
+                break;
+            }
+            int cantidad = LeerEntero("Ingrese la cantidad a comprar: ", 1, int.MaxValue);
+            while(cantidad > stockProduc[indice])
+            {
+                Console.WriteLine($"[ERROR] Stock insuficiente. Solo quedan {stockProduc[indice]} unidades en inventario.");
+                cantidad = LeerEntero("Ingrese la cantidad a comprar: ", 1, int.MaxValue);
+            }
 
+            string respuesta;
+            do
+            {
+                Console.Write("Aplica descuento de cliente frecuente (10%)? (S/N): ");
+                respuesta = Console.ReadLine().ToUpper();
+
+            } while (respuesta != "S" && respuesta != "N");
+
+            bool tieneDescuento = respuesta == "S";
+
+            decimal total = CalcularFactura(precioProduc[indice], cantidad, tieneDescuento, out decimal iva, out decimal descuento);
+            stockProduc[indice] -= cantidad;
+            ventaUnidades[indice] += cantidad;
+            totalVentas++;
+            totalDinero += total;
+
+            ImprimirEncabezado("TICKET DE VENTA");
+            Console.WriteLine($" Producto:          {nombreProduc[indice]} (x{cantidad})");
+            Console.WriteLine($" Subtotal:          {precioProduc[indice]*cantidad:C}");
+            Console.WriteLine($" Descuento (10%):         -{descuento:C}");
+            Console.WriteLine($" IVA (19%)          +{iva:C}");
+            Console.WriteLine($" --------------------------------------------------------------");
+            Console.WriteLine($" TOTAL A PAGAR:            {total:C}");
+            Console.WriteLine("=================================================================");
+            Console.WriteLine($"[OK] Venta efectuada con exito. Stock actualizado: {stockProduc[indice]} unidades.");
+            Console.ReadKey();
+            break;
         case 4:
             break;
 
